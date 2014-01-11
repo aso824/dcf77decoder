@@ -29,7 +29,7 @@ Struct `DCF77Result` is designed to handle returned data from decoder class. Fie
 
     struct DCF77Result {
       DCF77Time time;
-      unsigned short antenna, timeChange, summerTime;
+      bool antenna, timeChange, summerTime;
     }
     
 Usage
@@ -56,3 +56,4 @@ Example usage:
     	std::cerr << "Invalid data";
     else
     	result = decoder.getResult();
+    std::cout << "It's " << result.time.hour << ":" << result.time.minute << std::endl;

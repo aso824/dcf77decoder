@@ -20,6 +20,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  * 
  */
+ 
+#pragma once
+#include <string>
 
 struct DCF77Time {
 	/*
@@ -45,10 +48,10 @@ struct DCF77Result {
 	/*
 	 * Struct to store result from decoder
 	 */
-	DCF77Time time;					// Date and time
-	unsigned short antenna = 0,		// 0 - primary, 1 - secondary (or service maintenance)
-				   timeChange = 0,	// Next hour is the time change (CET/CEST)
-				   summerTime = 0;	// 1 when CEST time
+	DCF77Time time;			// Date and time
+	bool antenna = 0,		// 0 - primary, 1 - secondary (or service maintenance)
+		 timeChange = 0,	// Next hour is the time change (CET/CEST)
+		 summerTime = 0;	// 1 when CEST time
 };
 
 
@@ -116,6 +119,12 @@ DCF77Decoder::DCF77Decoder() {
 
 
 bool DCF77Decoder::set(bool data[59]) {
+	// Clear result
+	result.antenna = 0;
+	result.summerTime = 0;
+	result.timeChange = 0;
+	result.time.clear();
+	
 	// First bit must be 0
 	if (data[0] != 0) return false;
 	
@@ -219,7 +228,7 @@ bool DCF77Decoder::set(std::string data) {
 }
 
 
-DCF77Result DCF77Decoder::getResult() {
+inline DCF77Result DCF77Decoder::getResult() {
 	/*
 	 * Just returns data...
 	 */
